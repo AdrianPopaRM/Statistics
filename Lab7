@@ -1,0 +1,16 @@
+afisare_probabilitati_geometrice <- function(p, n) {
+  probabilitati <- dgeom(1:n, prob = p)
+  numere <- 1:n
+  
+  barplot(probabilitati, names.arg = numere, xlab = "Numarul de incercari pana la primul succes", 
+          ylab = "Probabilitate", main = "Distributie geometrica", col = "blue")
+}
+
+afisare_probabilitati_poisson <- function(lambda, n) {
+  probabilitati <- dpois(0:n, lambda)
+  numere <- 0:n
+  
+  barplot(probabilitati, names.arg = numere, xlab = "Numarul de evenimente", 
+          ylab = "Probabilitate", main = "Distributie Poisson", col = "green")
+}
+
