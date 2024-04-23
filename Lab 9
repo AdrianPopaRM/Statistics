@@ -1,0 +1,35 @@
+outliers_mean <- function(esantion) {
+  mean_val <- mean(esantion)
+  sd_val <- sd(esantion)
+  limita_inferioara <- mean_val - 2 * sd_val
+  limita_superioara <- mean_val + 2 * sd_val
+  outliers <- esantion[esantion < limita_inferioara | esantion > limita_superioara]
+  return(outliers)
+}
+
+
+outliers_iqr <- function(esantion) {
+  Q1 <- quantile(esantion, 0.25)
+  Q3 <- quantile(esantion, 0.75)
+  IQR <- Q3 - Q1
+  limita_inferioara <- Q1 - 1.5 * IQR
+  limita_superioara <- Q3 + 1.5 * IQR
+  outliers <- esantion[esantion < limita_inferioara | esantion > limita_superioara]
+  
+  return(outliers)
+}
+
+
+esantion <- c(1,91,38,72,13,27,11,19,5,22,20,19,8,17,11,15,13,23,14,17)
+
+outliers1 <- outliers_mean(esantion)
+print("Valorile aberante, calculate cu prima metoda:")
+print(outliers1)
+
+outliers2 <- outliers_iqr(esantion)
+print("Valori aberante, calculate cu a doua metoda:")
+print(outliers2)
+
+summary_status <-summary(esantion)
+print("Functia summary:")
+print(summary_status)
