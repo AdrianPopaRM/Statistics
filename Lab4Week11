@@ -1,0 +1,76 @@
+#EX 2.1 (B)
+
+f1 <- function(x) exp(x)
+
+integrala_estimata <- integrate(f1, lower = 1, upper = 4)
+
+valoare_exacta <- 51.87987
+
+eroare_absoluta <- abs(integrala_estimata$value - valoare_exacta)
+
+eroare_relativa <- eroare_absoluta / valoare_exacta
+print(paste("Ex II.1.(b)"))
+print(paste("Valoarea estimata a integralei:", integrala_estimata$value))
+print(paste("Eroare absoluta:", eroare_absoluta))
+print(paste("Eroare relativa:", eroare_relativa))
+
+
+#Ex2.1  (D)
+
+f2 <- function(x) 1 / (4*x^2 - 1)
+
+integrala_estimata <- integrate(f2, lower = 1, upper = Inf)
+
+valoare_exacta <- log(3/4)
+
+eroare_absoluta <- abs(integrala_estimata$value - valoare_exacta)
+
+eroare_relativa <- eroare_absoluta / valoare_exacta
+print(paste("Ex II.1.(d)"))
+print(paste("Valoarea estimata a integralei:", integrala_estimata$value))
+print(paste("Eroarea absoluta:", eroare_absoluta))
+print(paste("Eroarea relativa:", eroare_relativa))
+
+#EX2.2 
+
+set.seed(123)
+
+N <- 50000
+Lambda <- 3
+x <- rexp(N, Lambda)
+
+u <- sqrt(-log(1 - exp(-2 * x)) / 2)
+
+f_u <- exp(-2 * u^2)
+
+integral_estimata <- mean(f_u)
+
+valoare_exacta <- sqrt(pi/8)
+
+eroare_absoluta <- abs(integral_estimata - valoare_exacta)
+
+eroare_relativa <- eroare_absoluta / valoare_exacta
+
+print(paste("Ex II.2"))
+print(paste("Valoarea estimata a integralei:", integral_estimata))
+print(paste("Eroarea absoluta:", eroare_absoluta))
+print(paste("Eroarea relativa:", eroare_relativa))
+
+
+#EX 3.2
+
+
+lambda1 <- 4
+lambda2 <- 12
+prob_mecanic1 <- 3/4
+
+n <- 10000  # Numar simulari
+X1 <- rexp(n, rate = lambda1)
+X2 <- rexp(n, rate = lambda2)
+
+X <- ifelse(runif(n) < prob_mecanic1, X1, X2)
+
+mean_X <- mean(X)
+print(paste("Ex III.2"))
+cat("Media timpului asteptat (X):", round(mean_X, 2), "hours")
+
