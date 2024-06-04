@@ -1,11 +1,13 @@
 #### C1
 
-#### a)
+# A)
 shuffle_randomly = function(n) {
+  # Generate n uniformly random values from the interval [0, 1]
   U = runif(n, 0, 1)
-  
+  # Initialize the permutation vector with indices from 1 to n
   permutation = 1:n
   
+  # Sort the values from U and shuffle the corresponding indices
   for (i in 2:n) {
     key = U[i]
     key_index = permutation[i]
@@ -26,10 +28,11 @@ shuffle_randomly = function(n) {
 
 shuffle_randomly(10)
 
+# ************************************************************************* #
 
-#### b)
+# b)
 generate_binary_strings = function(n, k) {
-
+  # Generate n binary strings of length k
   bit_strings = list()
   
   for (i in 1:n) {
@@ -41,17 +44,18 @@ generate_binary_strings = function(n, k) {
 }
 
 compare_lexicographically = function(Wi, Wj) {
+  # Calculate the minimum length of the two strings
   Lij = min(length(Wi), length(Wj))
   
-
+  # Compare the binary strings bit by bit
   for (h in 1:Lij) {
     if (Wi[[h]] < Wj[[h]])
-      return(TRUE) 
+      return(TRUE) # Wi is strictly less than Wj
     else if (Wi[[h]] > Wj[[h]])
-      return(FALSE) 
+      return(FALSE) # Wi is not strictly less than Wj
   }
   
-
+  # If the strings are equal up to the minimum length, randomly add bits
   while (TRUE) {
     if (length(Wi) < length(Wj))
       Wi = c(Wi, sample(c(0, 1), 1))
@@ -69,17 +73,20 @@ compare_lexicographically = function(Wi, Wj) {
   }
 }
 
+# Generate binary words
 n = 6 ; k = 5
 words = generate_binary_strings(n, k)
 words
 
+# Compare two examples
 Wi = words[[4]] ; Wj = words[[6]]
 
+# Result
 result = compare_lexicographically(Wi, Wj)
 cat("Wi is lexicographically strictly less than Wj:", result, "\n")
 
 
-#### c)
+# c)
 random_quick_sort = function(S) {
   if (length(S) <= 1)
     return(S)
@@ -103,20 +110,21 @@ random_quick_sort = function(S) {
   return(c(sorted_left, list(pivot), sorted_right))
 }
 
+# Generate n binary words of k bits
 n = 6 ; k = 5
 words = generate_binary_strings(n, k)
-
 words
 
-
+# Display the n words sorted lexicographically
 random_quick_sort(words)
 
 
-#### d)
-equal_words = function(Wi, Wj) {
-
-  Lij = min(length(Wi), length(Wj))  
-
+# d)
+are_equal_words = function(Wi, Wj) {
+  # Calculate the minimum length of the two strings
+  Lij = min(length(Wi), length(Wj))
+  
+  # Compare the binary strings bit by bit
   for (i in 1:Lij)
     if (Wi[[i]] != Wj[[i]])
       return(FALSE)
@@ -125,15 +133,17 @@ equal_words = function(Wi, Wj) {
 }
 
 shuffle_randomly_RQS = function(n, k) {
-
+  # Generate n binary words of k bits
   words = generate_binary_strings(n, k)
   
+  # Sort the n words
   sorted_words = random_quick_sort(words)
   
+  # Find the indices of the sorted words
   indices = numeric(n)
   for (i in 1:length(sorted_words))
     for (j in 1:length(words))
-      if (equal_words(sorted_words[[i]], words[[j]])) {
+      if (are_equal_words(sorted_words[[i]], words[[j]])) {
         indices[i] = j
         break
       }
@@ -144,27 +154,28 @@ shuffle_randomly_RQS = function(n, k) {
 print(shuffle_randomly_RQS(6, 5))
 
 
-#### C2
+#### C2.
 
-#### a)
+# a)
 max_cut_random_algorithm = function(n) {
-
+  # Initialize a bipartite graph with 2n nodes and n*n edges
   graph = matrix(0, nrow = n * 2, ncol = n * 2)
   
   for (i in 1:(n * 2))
     for (j in 1:(n * 2)) {
-
+      # Add edges between the first half of the nodes and the second half
       if (i <= n & j > n) 
         graph[i, j] = 1
-
-      
+      # Add edges between the second half of the nodes and the first half
       else if (i > n & j <= n)
         graph[i, j] = 1
     }
   
+  # Randomly choose n nodes for A and the rest of n nodes form B
   A = sample(1:(n * 2), n)
   B = setdiff(1:(n * 2), A)
   
+  # Determine the edges in the cut
   cut_edges = matrix(0, nrow = n, ncol = n)
   
   for (i in 1:n) 
@@ -174,13 +185,14 @@ max_cut_random_algorithm = function(n) {
         cut_edges[i, j] = 1
     }
       
-  cut_cardinality = sum(cut_edges)
+  cut_cardinality = sum(cut_edges)  # Calculate the cardinality of the cut
   
   return(list(A = A, B = B, cut_edges = cut_edges, cut_cardinality = cut_cardinality))
 }
 
-#### b)
-
+# b)
+# To increase the chances of finding a maximum cardinality cut,
+# we can run the algorithm multiple times and choose the cut with the maximum cardinality
 increase_max_cut_chance = function(n, num_trials) {
   max_cut = NULL
   max_cut_cardinality = 0
@@ -193,4 +205,3 @@ increase_max_cut_chance = function(n, num_trials) {
     }
   return(max_cut)
   }
-
